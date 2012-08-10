@@ -19,16 +19,18 @@
 
 <body>
 
-<svg width="100px" height="100px" >
+<svg width="100px" height="100px">
     <rect  width="100px" height="100px" fill="red" />
 </svg>
 
 
 <p>
-Click the button to alter SVG contents. View-source for more.
+Click the button to alter SVG contents. <a href="#" onclick="this.href='view-source:' + location.href.replace(/#/, '')">View the page's source</a> for more.
 <br /><br />
+
 <button onclick="alter()">set .innerHTML</button>
 <button onclick="alert(document.getElementsByTagName('svg')[0].innerHTML)">get .innerHTML</button>
+
 </p>
 
 </body>
