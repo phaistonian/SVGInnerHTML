@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SVGInnerHTML demo</title>
+	<meta charset="utf-8" />
+	<script src="svginnerhtml.js"></script>
+	<script>
+	alter  = function () {
+		var svg = document.getElementsByTagName('svg')[0];
+
+		svg.innerHTML   = '<rect width="100" height="60" fill="green" />'
+						+ '<circle cx="10" cy="19" r="20" fill="blue"></circle>'
+						+ '<text x="15" y="20" fill="white">hello world</text>'
+						+ '<g transform="translate(0, 70)"><rect width="100" height="20" fill="yellow" /></g>';
+
+	}
+	</script>
+</head>
+
+<body>
+
+<svg width="100px" height="100px" >
+ 	<rect  width="100px" height="100px" fill="red" />
+</svg>
+
+
+<p>
+Click the button to alter SVG contents. View-source for more.
+<br /><br />
+<button onclick="alter()">set .innerHTML</button>
+<button onclick="alert(document.getElementsByTagName('svg')[0].innerHTML)">get .innerHTML</button>
+</p>
+
+</body>
+
+</html>
