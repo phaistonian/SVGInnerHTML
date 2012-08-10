@@ -1,98 +1,98 @@
 (function (view) {
 
 var
-	constructors  	= ['SVGSVGElement', 'SVGGElement']
-	, dummy 		= document.createElement('dummy');
+    constructors    = ['SVGSVGElement', 'SVGGElement']
+    , dummy         = document.createElement('dummy');
 
 if (!constructors[0] in view) {
-	return false;
+    return false;
 }
 
 if (Object.defineProperty) {
 
-	var innerHTMLPropDesc = {
+    var innerHTMLPropDesc = {
 
-		get : function () {
+        get : function () {
 
-			dummy.innerHTML = '';
+            dummy.innerHTML = '';
 
-			Array.prototype.slice.call(this.childNodes)
-			.forEach(function (node, index) {
-				dummy.appendChild(node.cloneNode(true));
-			});
+            Array.prototype.slice.call(this.childNodes)
+            .forEach(function (node, index) {
+                dummy.appendChild(node.cloneNode(true));
+            });
 
-			return dummy.innerHTML;
-		},
+            return dummy.innerHTML;
+        },
 
-		set : function (content) {
-			var
-				self 		= this
-				, parent 	= this
-				, allNodes 	= Array.prototype.slice.call(self.childNodes)
+        set : function (content) {
+            var
+                self        = this
+                , parent    = this
+                , allNodes  = Array.prototype.slice.call(self.childNodes)
 
-				, fn 		= function (to, node) {
-					if (node.nodeType !== 1) {
-						return false;
-					}
+                , fn        = function (to, node) {
+                    if (node.nodeType !== 1) {
+                        return false;
+                    }
 
-					var newNode = document.createElementNS('http://www.w3.org/2000/svg', node.nodeName.toLowerCase());
+                    var newNode = document.createElementNS('http://www.w3.org/2000/svg', node.nodeName.toLowerCase());
 
-					Array.prototype.slice.call(node.attributes)
-					.forEach(function (attribute) {
-						newNode.setAttribute(attribute.name, attribute.value);
-					});
+                    Array.prototype.slice.call(node.attributes)
+                    .forEach(function (attribute) {
+                        newNode.setAttribute(attribute.name, attribute.value);
+                    });
 
-					if (node.nodeName === 'TEXT') {
-						newNode.textContent = node.innerHTML;
-					}
+                    if (node.nodeName === 'TEXT') {
+                        newNode.textContent = node.innerHTML;
+                    }
 
-					to.appendChild(newNode);
+                    to.appendChild(newNode);
 
-					if (node.childNodes.length) {
+                    if (node.childNodes.length) {
 
-						Array.prototype.slice.call(node.childNodes)
-						.forEach(function (node, index) {
-							fn(newNode, node);
-						});
+                        Array.prototype.slice.call(node.childNodes)
+                        .forEach(function (node, index) {
+                            fn(newNode, node);
+                        });
 
-					}
-				};
+                    }
+                };
 
-			// /> to </tag>
-			content = content.replace(/<(\w+)([^<]+?)\/>/, '<$1$2></$1>');
+            // /> to </tag>
+            content = content.replace(/<(\w+)([^<]+?)\/>/, '<$1$2></$1>');
 
-			// Remove existing nodes
-			allNodes.forEach(function (node, index) {
-				node.parentNode.removeChild(node);
-			});
+            // Remove existing nodes
+            allNodes.forEach(function (node, index) {
+                node.parentNode.removeChild(node);
+            });
 
 
-			dummy.innerHTML = content;
+            dummy.innerHTML = content;
 
-			Array.prototype.slice.call(dummy.childNodes)
-			.forEach(function (node) {
-				fn(self, node);
-			});
+            Array.prototype.slice.call(dummy.childNodes)
+            .forEach(function (node) {
+                fn(self, node);
+            });
 
-		}
-		, enumerable		: true
-		, configurable		: true
-	};
+        }
+        , enumerable        : true
+        , configurable      : true
+    };
 
-	try {
-		constructors.forEach(function (constructor, index) {
-			Object.defineProperty(window[constructor].prototype, 'innerHTML', innerHTMLPropDesc);
-		});
-	} catch (ex) {
-		// TODO: Do something meaningful here
-	}
+    try {
+        constructors.forEach(function (constructor, index) {
+            Object.defineProperty(window[constructor].prototype, 'innerHTML', innerHTMLPropDesc);
+        });
+    } catch (ex) {
+        // TODO: Do something meaningful here
+    }
 
 } else if (Object['prototype'].__defineGetter__) {
 
-	constructors.forEach(function (constructor, index) {
-		window[constructor].prototype.__defineSetter__('innerHTML', innerHTMLPropDesc.set);
-		window[constructor].prototype.__defineGetter__('innerHTML', innerHTMLPropDesc.get);
-	});
+    constructors.forEach(function (constructor, index) {
+        window[constructor].prototype.__defineSetter__('innerHTML', innerHTMLPropDesc.set);
+        window[constructor].prototype.__defineGetter__('innerHTML', innerHTMLPropDesc.get);
+    });
 
 }
 
