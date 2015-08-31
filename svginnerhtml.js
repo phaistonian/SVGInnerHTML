@@ -35,7 +35,7 @@ if (Object.defineProperty) {
                         return false;
                     }
 
-                    var newNode = document.createElementNS('http://www.w3.org/2000/svg', node.nodeName.toLowerCase());
+                    var newNode = document.createElementNS('http://www.w3.org/2000/svg', node.nodeName);
 
                     Array.prototype.slice.call(node.attributes)
                     .forEach(function (attribute) {
